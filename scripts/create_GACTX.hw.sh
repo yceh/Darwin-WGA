@@ -19,24 +19,23 @@
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
-
+set -e
 curr_dir=$PWD
 
 rm -rf test_GACTX_hw
 cp -r ./src/host/GACTX ./test_GACTX_hw
 cp ./src/host/common/* ./test_GACTX_hw/
 
-xocc -g --target hw --platform $AWS_PLATFORM --link \
+v++  -t hw  --platform $AWS_PLATFORM --link \
     --log_dir Log_Dir --temp_dir Log_Dir -s -O3 --kernel_frequency 160 \
-    --xp "vivado_prop:run.synth_1.STEPS.SYNTH_DESIGN.ARGS.NO_LC=1"  \
-    --xp "vivado_prop:run.impl_1.STEPS.PLACE_DESIGN.ARGS.DIRECTIVE=SSI_SpreadLogic_high" \
-    --xp "vivado_prop:run.impl_1.STEPS.PHYS_OPT_DESIGN.DIRECTIVE=AggressiveExplore" \
-    --xp "vivado_prop:run.impl_1.STEPS.ROUTE_DESIGN.ARGS.DIRECTIVE=AlternateCLBRouting"  \
-    --xp "vivado_prop:run.impl_1.STEPS.PHYS_OPT_DESIGN.DIRECTIVE=AggressiveExplore" \
-    --nk GACTX_bank3:1 \
-    --sp GACTX_bank3_1.m00_axi:bank3 \
-    --sp GACTX_bank3_1.m01_axi:bank3 \
-    --output test_GACTX_hw/GACTX.hw.xclbin xclbin/GACTX_bank3.xo
+    --vivado.prop "run.synth_1.STEPS.SYNTH_DESIGN.ARGS.NO_LC=1"  \
+    --vivado.prop "run.impl_1.STEPS.PLACE_DESIGN.ARGS.DIRECTIVE=SSI_SpreadLogic_high" \
+    --vivado.prop "run.impl_1.STEPS.PHYS_OPT_DESIGN.DIRECTIVE=AggressiveExplore" \
+    --vivado.prop "run.impl_1.STEPS.ROUTE_DESIGN.ARGS.DIRECTIVE=AlternateCLBRouting"  \
+    --connectivity.nk GACTX_bank3:1 \
+    --connectivity.sp GACTX_bank3_1.m00_axi:bank3 \
+    --connectivity.sp GACTX_bank3_1.m01_axi:bank3 \
+    -o test_GACTX_hw/GACTX.hw.xclbin xclbin/GACTX_bank3.xo
 rm -rf *.dir *.cf *.dat
 
 cd $curr_dir

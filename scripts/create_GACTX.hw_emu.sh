@@ -26,7 +26,7 @@ rm -rf test_GACTX_hw_emu
 cp -r ./src/host/GACTX ./test_GACTX_hw_emu
 cp ./src/host/common/* ./test_GACTX_hw_emu/
 
-v++ -g --target hw_emu --platform $AWS_PLATFORM --link \
+v++  -t hw_emu --platform $AWS_PLATFORM --link \
     --connectivity.nk GACTX_bank3:1 \
     --connectivity.sp GACTX_bank3_1.m00_axi:bank3 \
     --connectivity.sp GACTX_bank3_1.m01_axi:bank3 \
@@ -38,5 +38,5 @@ rm -rf packaged_kernel* tmp_kernel_pack* *.jou *.log *.wdb *.wcfg .Xil
 
 cd ./test_GACTX_hw_emu
 
-cmake -DCMAKE_BUILD_TYPE=Release -DAWS_PLATFORM=${AWS_PLATFORM} -DXILINX_SDX=${XILINX_SDX} -DXILINX_VIVADO=${XILINX_VIVADO} .
+cmake -DCMAKE_BUILD_TYPE=Release -DAWS_PLATFORM=${AWS_PLATFORM} -DXILINX_SDX=${XILINX_XRT} -DXILINX_VIVADO=${XILINX_VIVADO} .
 make
