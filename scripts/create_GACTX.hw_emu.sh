@@ -26,11 +26,11 @@ rm -rf test_GACTX_hw_emu
 cp -r ./src/host/GACTX ./test_GACTX_hw_emu
 cp ./src/host/common/* ./test_GACTX_hw_emu/
 
-xocc -g --target hw_emu --platform $AWS_PLATFORM --link \
-    --nk GACTX_bank3:1 \
-    --sp GACTX_bank3_1.m00_axi:bank3 \
-    --sp GACTX_bank3_1.m01_axi:bank3 \
-    --output test_GACTX_hw_emu/GACTX.hw_emu.xclbin xclbin/GACTX_bank3.xo
+v++ -g --target hw_emu --platform $AWS_PLATFORM --link \
+    --connectivity.nk GACTX_bank3:1 \
+    --connectivity.sp GACTX_bank3_1.m00_axi:bank3 \
+    --connectivity.sp GACTX_bank3_1.m01_axi:bank3 \
+    -o test_GACTX_hw_emu/GACTX.hw_emu.xclbin xclbin/GACTX_bank3.xo
 rm -rf *.dir *.cf *.dat
 
 cd $curr_dir
