@@ -156,7 +156,6 @@ int main(int argc, char** argv){
 
    // Get Accelerator compute device
     cl_uint num_devices;
-    unsigned int device_found = 0;
     cl_device_id devices[16];  // compute device id
     char cl_device_name[1001];
     err = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_ACCELERATOR, 16, devices, &num_devices);
@@ -166,25 +165,7 @@ int main(int argc, char** argv){
         return -1;
     }
 
-    //iterate all devices to select the target device.
-    for (uint i=0; i<num_devices; i++) {
-        err = clGetDeviceInfo(devices[i], CL_DEVICE_NAME, 1024, cl_device_name, 0);
-        if (err != CL_SUCCESS) {
-            printf("Error: Failed to get device name for device %d!\n", i);
-            printf("Test failed\n");
-            return EXIT_FAILURE;
-        }
-        if(strcmp(cl_device_name, target_device_name) == 0) {
-            device_id = devices[i];
-            device_found = 1;
-       }
-    }
-
-    if (!device_found) {
-        printf("Target device %s not found. Exit.\n", target_device_name);
-        return EXIT_FAILURE;
-    }
-
+    device_id=devices[0];
     // Create a compute context
     context = clCreateContext(0, 1, &device_id, NULL, NULL, &err);
     if (!context) {
